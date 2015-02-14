@@ -27,19 +27,33 @@ execute(function() {
           an.smoothingTimeConstant=0.3;
           ms.connect(an);
         };
+
+        function addPlaybackRateControl() {
+            var playbackRate = ce('select', {id:'playbackRate'}, {
+                marginBottom:'8px',cursor:'pointer',background:'#fff',border:'1px solid #E3E9EF',borderRadius:'2px'
+              });
+
+            addRateOptionDisabled(playbackRate, "Rate");
+            addRateOption(playbackRate, "1.0");
+            addRateOption(playbackRate, "1.25");
+            addRateOption(playbackRate, "1.5");
+            addRateOption(playbackRate, "2.0");
+
+            addPlaybackRateListeners(playbackRate);
+
+            ge('side_filters').insertBefore(playbackRate, ge('album_filters'));
+
+            return playbackRate;
+        }
           
-        playbackRate=ce('select', {}, {
-                      marginBottom:'8px',cursor:'pointer',background:'#fff',border:'1px solid #E3E9EF',borderRadius:'2px'
-                    });
-          
-        function addRateOption(rate) {
+        function addRateOption(playbackRate, rate) {
           var rateOpt = document.createElement("option");
           rateOpt.text = rate;
           rateOpt.value = parseFloat(rate);
           playbackRate.add(rateOpt);
         }
           
-        function addRateOptionDisabled(text) {
+        function addRateOptionDisabled(playbackRate, text) {
           var rateOpt = document.createElement("option");
           rateOpt.setAttribute("disabled", "disabled");
           rateOpt.setAttribute("selected", "selected");
@@ -47,41 +61,39 @@ execute(function() {
           playbackRate.add(rateOpt);
         }
           
-        function addOptGroup(label) {
+        function addOptGroup(playbackRate, label) {
           var rateOptGroup = document.createElement("optgroup");
           rateOptGroup.label = label;
           playbackRate.add(rateOptGroup);
-        }      
-          
-        // addOptGroup("Rate");
-        addRateOptionDisabled("Rate");
-        addRateOption("1.0");
-        addRateOption("1.25");
-        addRateOption("1.5");
-        addRateOption("2.0");
-          
+        }
+
         var currentPlaybackRate = 1.0;
-        playbackRate.addEventListener("change", function(event, opts) {
-            var audio = document.getElementsByTagName("audio");
-            if(audio.length > 0) {
-                audio[0].playbackRate = playbackRate.value;
-            }
-            currentPlaybackRate = playbackRate.value;
-        });
+        function addPlaybackRateListeners(playbackRate) {
+          playbackRate.addEventListener("change", function(event, opts) {
+              var audio = document.getElementsByTagName("audio");
+              if(audio.length > 0) {
+                  audio[0].playbackRate = playbackRate.value;
+              }
+              currentPlaybackRate = playbackRate.value;
+          });
+        }
           
         function playHandler(event) {
             var audio = document.getElementsByTagName("audio");
             if(audio.length > 0) {
                 audio[0].playbackRate = currentPlaybackRate;
-            }          
+            }
+
+            var select = document.getElementById("playbackRate");
+            if(!select && ge('side_filters')) {
+              addPlaybackRateControl();
+            }     
         }
           
         setInterval(playHandler, 10);
           
         var ac_play = document.getElementById("ac_play");
         ac_play.addEventListener("click", playHandler);
-        
-        ge('side_filters').insertBefore(playbackRate, ge('album_filters'));
       });
   })(window);
 });
