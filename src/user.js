@@ -28,8 +28,8 @@ execute(function() {
           ms.connect(an);
         };
 
-        function addPlaybackRateControl() {
-            var playbackRate = ce('select', {id:'playbackRate'}, {
+        function addPlaybackRateControl(id, pad) {
+            var playbackRate = ce('select', {id: id}, {
                 marginBottom:'8px',cursor:'pointer',background:'#fff',border:'1px solid #E3E9EF',borderRadius:'2px'
               });
 
@@ -41,7 +41,7 @@ execute(function() {
 
             addPlaybackRateListeners(playbackRate);
 
-            ge('side_filters').insertBefore(playbackRate, ge('album_filters'));
+            ge(pad + 'side_filters').insertBefore(playbackRate, ge(pad + 'album_filters'));
 
             return playbackRate;
         }
@@ -86,8 +86,13 @@ execute(function() {
 
             var select = document.getElementById("playbackRate");
             if(!select && ge('side_filters')) {
-              addPlaybackRateControl();
-            }     
+              addPlaybackRateControl("playbackRate", "");
+            }
+
+            var padSelect = document.getElementById("padPlaybackRate");
+            if(!padSelect && ge('pad_side_filters')) {
+              addPlaybackRateControl("padPlaybackRate", "pad_");
+            }
         }
           
         setInterval(playHandler, 10);
