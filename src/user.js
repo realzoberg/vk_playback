@@ -48,13 +48,16 @@ execute(function() {
           var rateOpt = document.createElement("option");
           rateOpt.text = rate;
           rateOpt.value = parseFloat(rate);
+          if(rateOpt.value == currentPlaybackRate) {
+            rateOpt.setAttribute("selected", "selected");
+          }
           playbackRate.add(rateOpt);
         }
           
         function addRateOptionDisabled(playbackRate, text) {
           var rateOpt = document.createElement("option");
           rateOpt.setAttribute("disabled", "disabled");
-          rateOpt.setAttribute("selected", "selected");
+          // rateOpt.setAttribute("selected", "selected");
           rateOpt.text = text;
           playbackRate.add(rateOpt);
         }
