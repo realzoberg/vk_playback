@@ -22,10 +22,6 @@ execute(function() {
           ac=new (window.AudioContext||window.webkitAudioContext)();
           ms=ac.createMediaElementSource(ge('html5_audio'));
           ms.connect(ac.destination);
-          an=ac.createAnalyser();
-          an.fftSize=64;
-          an.smoothingTimeConstant=0.3;
-          ms.connect(an);
         };
 
         function addPlaybackRateControl(id, pad) {
@@ -34,6 +30,8 @@ execute(function() {
               });
 
             addRateOptionDisabled(playbackRate, "Rate");
+            addRateOption(playbackRate, "0.5");
+            addRateOption(playbackRate, "0.75");
             addRateOption(playbackRate, "1.0");
             addRateOption(playbackRate, "1.25");
             addRateOption(playbackRate, "1.5");
